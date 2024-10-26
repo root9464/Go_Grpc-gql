@@ -1,10 +1,12 @@
 package main
 
 import (
+	"context"
+	"fmt"
+	"log"
 	"net"
 	"root/shared/database"
 	auth "root/shared/proto/out"
-	"root/shared/utils"
 
 	"google.golang.org/grpc"
 	"gorm.io/gorm"
@@ -15,33 +17,23 @@ type Server struct {
 	db *gorm.DB
 }
 
-func main() {
-	log := utils.Logger()
+func (s *Server) SayHello(ctx context.Context, req *auth.HelloRequest) (*auth.HelloReply, error) {
+	log.Printf("Received SayHello request for name: %s", req.GetName())
+	return &auth.HelloReply{
+		Message: fmt.Sprintf("Hello, %s!", req.GetName()),
+	}, nil
+}
 
+func main() {
+	log.Println("start gRPC server at :50051")
 	conn, err := net.Listen("tcp", ":50051")
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer conn.Close()
 
-	db, err := database.ConnectDb()
-	if err != nil {
-		log.Fatal(err)
-	}
-
 	server := grpc.NewServer()
-	config := &Server{
-		UnimplementedAuthServiceServer: auth.UnimplementedAuthServiceServer{},
-		db:                             db.Db,
-	}
+	auth.RegisterAuthServiceServer(server, &Server{db: database.DB.Db}) // Используем mongo.Conn
+	server.Serve(conn)
 
-	auth.RegisterAuthServiceServer(server, config)
-	err = server.Serve(conn)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	log.Info("Starting server on :50051")
-	log.Info("Database connected")
-	log.Info("Server started")
 }
