@@ -1,0 +1,76 @@
+// greeter.proto
+syntax = "proto3";
+
+import "google/graphql.proto";
+import "google/protobuf/descriptor.proto";
+
+option go_package = "./out";
+
+package auth;
+
+service AuthService {
+  option (graphql.service) = {
+    host : "localhost:50051"
+    insecure : true
+  };
+
+  rpc SayHello(HelloRequest) returns (HelloReply) {
+    option (graphql.schema) = {
+      type : QUERY
+      name : "hello"
+    };
+  };
+
+  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse) {
+    option (graphql.schema) = {
+      type : MUTATION
+      name : "login"
+    };
+  };
+
+  rpc ChangeUser(ChangeUserRequest) returns (ChangeUserResponse) {
+    option (graphql.schema) = {
+      type : MUTATION
+      name : "change"
+    };
+  };
+
+  rpc GetUserInfo(GetUserInfoRequest) returns (GetUserInfoResponse) {
+    option (graphql.schema) = {
+      type : QUERY
+      name : "user"
+    };
+  }
+}
+
+message GetUserInfoRequest {
+  string name = 1 [ (graphql.field) = {required : true} ];
+}
+
+message GetUserInfoResponse { string name = 1; }
+
+message ChangeUserRequest {
+  string name = 1 [ (graphql.field) = {required : true} ];
+  string password = 2 [ (graphql.field) = {required : true} ];
+  string email = 3 [ (graphql.field) = {required : true} ];
+}
+
+message ChangeUserResponse { bool status = 1; }
+
+message CreateUserRequest {
+  string name = 1 [ (graphql.field) = {required : true} ];
+  string password = 2 [ (graphql.field) = {required : true} ];
+  string email = 3 [ (graphql.field) = {required : true} ];
+}
+
+message CreateUserResponse { bool status = 1; }
+
+message HelloRequest {
+  string name = 1 [ (graphql.field) = {required : true} ];
+}
+
+message HelloReply { string message = 1; }
+
+// protoc -I.  --go_out=./out --go_opt=paths=source_relative --go-grpc_out=./out
+// --go-grpc_opt=paths=source_relative --graphql_out=./out
+// --graphql_opt=paths=source_relative auth.proto
