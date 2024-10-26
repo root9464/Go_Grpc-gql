@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"fmt"
-	"log"
 	"net"
 	"root/shared/database"
 	auth "root/shared/proto/out"
@@ -12,6 +11,8 @@ import (
 	"google.golang.org/grpc"
 	"gorm.io/gorm"
 )
+
+var log = utils.Logger()
 
 type Server struct {
 	auth.UnimplementedAuthServiceServer
