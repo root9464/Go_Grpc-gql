@@ -1,22 +1,24 @@
 package main
 
 import (
-	"log"
 	"net/http"
 	auth "root/shared/proto/out"
+	"root/shared/utils"
 
 	"github.com/ysugimoto/grpc-graphql-gateway/runtime"
 )
 
 func main() {
+	const port = ":6069"
+	log := utils.Logger()
 	mux := runtime.NewServeMux()
 
 	if err := auth.RegisterAuthServiceGraphql(mux); err != nil {
-		log.Printf("register grpc service to graphql error: %v\n", err)
+		log.WithError(err).Fatal("Failed to register graphql handler")
 		return
 	}
 
-	log.Println("start graphql server at :8888")
+	log.Infof("Listening on %s", port)
 	http.Handle("/graphql", mux)
-	log.Fatalln(http.ListenAndServe(":8888", nil))
+	log.Fatalln(http.ListenAndServe(port, nil))
 }
