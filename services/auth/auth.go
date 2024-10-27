@@ -2,13 +2,32 @@ package main
 
 import (
 	"net"
-	auth "root/services/auth/rpc"
+	rpc "root/services/auth/rpc"
 	"root/shared/database"
-	"root/shared/proto/out"
+	auth "root/shared/proto/out" // Correctly import the auth service
 	"root/shared/utils"
 
 	"google.golang.org/grpc"
+	"gorm.io/gorm"
 )
+
+// функция main запускает сервер gRPC
+// функция register регистрирует все сервисы gRPC
+// функция newServices создает новый экземпляр Services и возвращает указатель на него
+
+type Services struct {
+	AuthService auth.AuthServiceServer
+}
+
+func NewServices(db *gorm.DB) *Services {
+	return &Services{
+		AuthService: rpc.NewAuthService(db),
+	}
+}
+
+func (s *Services) Register(server *grpc.Server) {
+	auth.RegisterAuthServiceServer(server, s.AuthService)
+}
 
 func main() {
 	log := utils.Logger()
@@ -21,13 +40,15 @@ func main() {
 
 	conn, err := net.Listen("tcp", ":50051")
 	if err != nil {
-		log.WithError(err).Fatal("❌ Failed to listen port")
+		log.WithError(err).Fatal("❌ Failed to listen on port")
 	}
 	defer conn.Close()
 
 	server := grpc.NewServer()
-	authService := auth.NewAuthService(database.Db)    // Use the constructor to create the service
-	out.RegisterAuthServiceServer(server, authService) // Register the service
+	services := NewServices(database.Db)
+
+	// Register all services
+	services.Register(server)
 
 	log.Info("✅ Server started successfully")
 
