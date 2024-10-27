@@ -1,9 +1,6 @@
 package database
 
 import (
-	"log"
-	"os"
-
 	"github.com/joho/godotenv"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -18,11 +15,12 @@ var DB Database
 func ConnectDb() (*Database, error) {
 	_ = godotenv.Load()
 
-	dbURL, exists := os.LookupEnv("PSQL_URL")
-	if !exists {
-		log.Fatal("PSQL_URL is not set in environment variables")
-	}
+	// dbURL, exists := os.LookupEnv("PSQL_URL")
+	// if !exists {
+	// 	log.Fatal("PSQL_URL is not set in environment variables")
+	// }
 
+	dbURL := "postgres://myuser:mypassword@localhost:5432/mydb?sslmode=disable"
 	db, err := gorm.Open(postgres.Open(dbURL), &gorm.Config{})
 	if err != nil {
 		return nil, err
