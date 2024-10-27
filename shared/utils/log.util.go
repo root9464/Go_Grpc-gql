@@ -1,9 +1,6 @@
 package utils
 
 import (
-	"time"
-
-	"github.com/gofiber/fiber/v2"
 	"github.com/sirupsen/logrus"
 )
 
@@ -17,21 +14,4 @@ func Logger() *logrus.Logger {
 	})
 
 	return log
-}
-
-func LoggerServer() fiber.Handler {
-	return func(c *fiber.Ctx) error {
-		start := time.Now()
-		err := c.Next()
-
-		log := Logger()
-		log.WithFields(logrus.Fields{
-			"status":     c.Response().StatusCode(),
-			"method":     c.Method(),
-			"path":       c.OriginalURL(),
-			"remoteAddr": c.IP(),
-			"took":       time.Since(start),
-		})
-		return err
-	}
 }
