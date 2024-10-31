@@ -10,13 +10,14 @@ require (
 	github.com/sirupsen/logrus v1.9.3
 	github.com/ysugimoto/grpc-graphql-gateway v0.23.0
 	google.golang.org/grpc v1.67.1
-	google.golang.org/protobuf v1.34.2
+	google.golang.org/protobuf v1.35.1
 	gorm.io/driver/postgres v1.5.9
 	gorm.io/gorm v1.25.12
 )
 
 require (
 	github.com/andybalholm/brotli v1.0.5 // indirect
+	github.com/golang/protobuf v1.5.0 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/iancoleman/strcase v0.0.0-20191112232945-16388991a334 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
@@ -39,4 +40,5 @@ require (
 	golang.org/x/sys v0.24.0 // indirect
 	golang.org/x/text v0.17.0 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20240814211410-ddb44dafa142 // indirect
+	google.golang.org/grpc/cmd/protoc-gen-go-grpc v1.5.1 // indirect
 )

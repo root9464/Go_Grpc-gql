@@ -2,9 +2,10 @@ package main
 
 import (
 	"net"
-	rpc "root/services/auth/rpc"
+	rpc "root/services/user/rpc"
 	"root/shared/database"
-	auth "root/shared/proto/out" // Correctly import the auth service
+	"root/shared/middleware"
+	user "root/shared/proto/out" // Correctly import the auth service
 	"root/shared/utils"
 
 	"google.golang.org/grpc"
@@ -16,17 +17,17 @@ import (
 // функция newServices создает новый экземпляр Services и возвращает указатель на него
 
 type Services struct {
-	AuthService auth.AuthServiceServer
+	UserService user.AuthServiceServer
 }
 
 func NewServices(db *gorm.DB) *Services {
 	return &Services{
-		AuthService: rpc.NewAuthService(db),
+		UserService: rpc.NewAuthService(db),
 	}
 }
 
 func (s *Services) Register(server *grpc.Server) {
-	auth.RegisterAuthServiceServer(server, s.AuthService)
+	user.RegisterAuthServiceServer(server, s.UserService)
 }
 
 func main() {
@@ -44,14 +45,16 @@ func main() {
 	}
 	defer conn.Close()
 
-	server := grpc.NewServer()
+	server := grpc.NewServer(grpc.ChainUnaryInterceptor(
+		middleware.LoggerGRPC(log),
+	))
 	services := NewServices(database.Db)
 
 	// Register all services
 	services.Register(server)
 
 	log.Info("✅ Server started successfully")
-
+	log.Infof("🌐 Server is running on %s", ":50051")
 	if err := server.Serve(conn); err != nil {
 		log.WithError(err).Fatal("❌ Failed to start server")
 	}

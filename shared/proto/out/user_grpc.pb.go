@@ -4,7 +4,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.5.1
 // - protoc             v5.28.2
-// source: auth.proto
+// source: user.proto
 
 package out
 
@@ -31,7 +31,7 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AuthServiceClient interface {
-	SayHello(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloReply, error)
+	SayHello(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloResponse, error)
 	CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*CreateUserResponse, error)
 	ChangeUser(ctx context.Context, in *ChangeUserRequest, opts ...grpc.CallOption) (*ChangeUserResponse, error)
 	GetUserInfo(ctx context.Context, in *GetUserInfoRequest, opts ...grpc.CallOption) (*GetUserInfoResponse, error)
@@ -45,9 +45,9 @@ func NewAuthServiceClient(cc grpc.ClientConnInterface) AuthServiceClient {
 	return &authServiceClient{cc}
 }
 
-func (c *authServiceClient) SayHello(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloReply, error) {
+func (c *authServiceClient) SayHello(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(HelloReply)
+	out := new(HelloResponse)
 	err := c.cc.Invoke(ctx, AuthService_SayHello_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -89,7 +89,7 @@ func (c *authServiceClient) GetUserInfo(ctx context.Context, in *GetUserInfoRequ
 // All implementations must embed UnimplementedAuthServiceServer
 // for forward compatibility.
 type AuthServiceServer interface {
-	SayHello(context.Context, *HelloRequest) (*HelloReply, error)
+	SayHello(context.Context, *HelloRequest) (*HelloResponse, error)
 	CreateUser(context.Context, *CreateUserRequest) (*CreateUserResponse, error)
 	ChangeUser(context.Context, *ChangeUserRequest) (*ChangeUserResponse, error)
 	GetUserInfo(context.Context, *GetUserInfoRequest) (*GetUserInfoResponse, error)
@@ -103,7 +103,7 @@ type AuthServiceServer interface {
 // pointer dereference when methods are called.
 type UnimplementedAuthServiceServer struct{}
 
-func (UnimplementedAuthServiceServer) SayHello(context.Context, *HelloRequest) (*HelloReply, error) {
+func (UnimplementedAuthServiceServer) SayHello(context.Context, *HelloRequest) (*HelloResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SayHello not implemented")
 }
 func (UnimplementedAuthServiceServer) CreateUser(context.Context, *CreateUserRequest) (*CreateUserResponse, error) {
@@ -233,5 +233,5 @@ var AuthService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "auth.proto",
+	Metadata: "user.proto",
 }

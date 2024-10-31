@@ -3,6 +3,7 @@ package out
 
 import (
 	"context"
+
 	"github.com/graphql-go/graphql"
 	"github.com/pkg/errors"
 	"github.com/ysugimoto/grpc-graphql-gateway/runtime"
@@ -10,23 +11,37 @@ import (
 )
 
 var (
-	gql__type_HelloRequest         *graphql.Object      // message HelloRequest in auth.proto
-	gql__type_HelloReply           *graphql.Object      // message HelloReply in auth.proto
-	gql__type_GetUserInfoResponse  *graphql.Object      // message GetUserInfoResponse in auth.proto
-	gql__type_GetUserInfoRequest   *graphql.Object      // message GetUserInfoRequest in auth.proto
-	gql__type_CreateUserResponse   *graphql.Object      // message CreateUserResponse in auth.proto
-	gql__type_CreateUserRequest    *graphql.Object      // message CreateUserRequest in auth.proto
-	gql__type_ChangeUserResponse   *graphql.Object      // message ChangeUserResponse in auth.proto
-	gql__type_ChangeUserRequest    *graphql.Object      // message ChangeUserRequest in auth.proto
-	gql__input_HelloRequest        *graphql.InputObject // message HelloRequest in auth.proto
-	gql__input_HelloReply          *graphql.InputObject // message HelloReply in auth.proto
-	gql__input_GetUserInfoResponse *graphql.InputObject // message GetUserInfoResponse in auth.proto
-	gql__input_GetUserInfoRequest  *graphql.InputObject // message GetUserInfoRequest in auth.proto
-	gql__input_CreateUserResponse  *graphql.InputObject // message CreateUserResponse in auth.proto
-	gql__input_CreateUserRequest   *graphql.InputObject // message CreateUserRequest in auth.proto
-	gql__input_ChangeUserResponse  *graphql.InputObject // message ChangeUserResponse in auth.proto
-	gql__input_ChangeUserRequest   *graphql.InputObject // message ChangeUserRequest in auth.proto
+	gql__type_HelloResponse        *graphql.Object      // message HelloResponse in user.proto
+	gql__type_HelloRequest         *graphql.Object      // message HelloRequest in user.proto
+	gql__type_GetUserInfoResponse  *graphql.Object      // message GetUserInfoResponse in user.proto
+	gql__type_GetUserInfoRequest   *graphql.Object      // message GetUserInfoRequest in user.proto
+	gql__type_CreateUserResponse   *graphql.Object      // message CreateUserResponse in user.proto
+	gql__type_CreateUserRequest    *graphql.Object      // message CreateUserRequest in user.proto
+	gql__type_ChangeUserResponse   *graphql.Object      // message ChangeUserResponse in user.proto
+	gql__type_ChangeUserRequest    *graphql.Object      // message ChangeUserRequest in user.proto
+	gql__input_HelloResponse       *graphql.InputObject // message HelloResponse in user.proto
+	gql__input_HelloRequest        *graphql.InputObject // message HelloRequest in user.proto
+	gql__input_GetUserInfoResponse *graphql.InputObject // message GetUserInfoResponse in user.proto
+	gql__input_GetUserInfoRequest  *graphql.InputObject // message GetUserInfoRequest in user.proto
+	gql__input_CreateUserResponse  *graphql.InputObject // message CreateUserResponse in user.proto
+	gql__input_CreateUserRequest   *graphql.InputObject // message CreateUserRequest in user.proto
+	gql__input_ChangeUserResponse  *graphql.InputObject // message ChangeUserResponse in user.proto
+	gql__input_ChangeUserRequest   *graphql.InputObject // message ChangeUserRequest in user.proto
 )
+
+func Gql__type_HelloResponse() *graphql.Object {
+	if gql__type_HelloResponse == nil {
+		gql__type_HelloResponse = graphql.NewObject(graphql.ObjectConfig{
+			Name: "Out_Type_HelloResponse",
+			Fields: graphql.Fields{
+				"message": &graphql.Field{
+					Type: graphql.String,
+				},
+			},
+		})
+	}
+	return gql__type_HelloResponse
+}
 
 func Gql__type_HelloRequest() *graphql.Object {
 	if gql__type_HelloRequest == nil {
@@ -42,26 +57,18 @@ func Gql__type_HelloRequest() *graphql.Object {
 	return gql__type_HelloRequest
 }
 
-func Gql__type_HelloReply() *graphql.Object {
-	if gql__type_HelloReply == nil {
-		gql__type_HelloReply = graphql.NewObject(graphql.ObjectConfig{
-			Name: "Out_Type_HelloReply",
-			Fields: graphql.Fields{
-				"message": &graphql.Field{
-					Type: graphql.String,
-				},
-			},
-		})
-	}
-	return gql__type_HelloReply
-}
-
 func Gql__type_GetUserInfoResponse() *graphql.Object {
 	if gql__type_GetUserInfoResponse == nil {
 		gql__type_GetUserInfoResponse = graphql.NewObject(graphql.ObjectConfig{
 			Name: "Out_Type_GetUserInfoResponse",
 			Fields: graphql.Fields{
 				"name": &graphql.Field{
+					Type: graphql.String,
+				},
+				"password": &graphql.Field{
+					Type: graphql.String,
+				},
+				"email": &graphql.Field{
 					Type: graphql.String,
 				},
 			},
@@ -152,6 +159,20 @@ func Gql__type_ChangeUserRequest() *graphql.Object {
 	return gql__type_ChangeUserRequest
 }
 
+func Gql__input_HelloResponse() *graphql.InputObject {
+	if gql__input_HelloResponse == nil {
+		gql__input_HelloResponse = graphql.NewInputObject(graphql.InputObjectConfig{
+			Name: "Out_Input_HelloResponse",
+			Fields: graphql.InputObjectConfigFieldMap{
+				"message": &graphql.InputObjectFieldConfig{
+					Type: graphql.String,
+				},
+			},
+		})
+	}
+	return gql__input_HelloResponse
+}
+
 func Gql__input_HelloRequest() *graphql.InputObject {
 	if gql__input_HelloRequest == nil {
 		gql__input_HelloRequest = graphql.NewInputObject(graphql.InputObjectConfig{
@@ -166,26 +187,18 @@ func Gql__input_HelloRequest() *graphql.InputObject {
 	return gql__input_HelloRequest
 }
 
-func Gql__input_HelloReply() *graphql.InputObject {
-	if gql__input_HelloReply == nil {
-		gql__input_HelloReply = graphql.NewInputObject(graphql.InputObjectConfig{
-			Name: "Out_Input_HelloReply",
-			Fields: graphql.InputObjectConfigFieldMap{
-				"message": &graphql.InputObjectFieldConfig{
-					Type: graphql.String,
-				},
-			},
-		})
-	}
-	return gql__input_HelloReply
-}
-
 func Gql__input_GetUserInfoResponse() *graphql.InputObject {
 	if gql__input_GetUserInfoResponse == nil {
 		gql__input_GetUserInfoResponse = graphql.NewInputObject(graphql.InputObjectConfig{
 			Name: "Out_Input_GetUserInfoResponse",
 			Fields: graphql.InputObjectConfigFieldMap{
 				"name": &graphql.InputObjectFieldConfig{
+					Type: graphql.String,
+				},
+				"password": &graphql.InputObjectFieldConfig{
+					Type: graphql.String,
+				},
+				"email": &graphql.InputObjectFieldConfig{
 					Type: graphql.String,
 				},
 			},
@@ -321,7 +334,7 @@ func (x *graphql__resolver_AuthService) CreateConnection(ctx context.Context) (*
 func (x *graphql__resolver_AuthService) GetQueries(conn *grpc.ClientConn) graphql.Fields {
 	return graphql.Fields{
 		"hello": &graphql.Field{
-			Type: Gql__type_HelloReply(),
+			Type: Gql__type_HelloResponse(),
 			Args: graphql.FieldConfigArgument{
 				"name": &graphql.ArgumentConfig{
 					Type:         graphql.NewNonNull(graphql.String),

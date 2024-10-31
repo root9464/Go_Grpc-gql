@@ -24,7 +24,7 @@ func main() {
 		DisableStartupMessage: true,
 	})
 
-	app.Use(middleware.Logger(log))
+	app.Use(middleware.LoggerHTTP(log))
 
 	// Register GraphQL handler
 	mux := runtime.NewServeMux()

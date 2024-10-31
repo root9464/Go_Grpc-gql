@@ -5,6 +5,7 @@
 # данный скрипт создан мною для решения этой проблемы
 
 # ./packages.fix.sh pwhich protoc-gen-go     
+# ${HOME}/go/bin/protoc-gen-go
 pwhich() {
   [ $# -eq 1 ] && which "$1" || echo "Usage: pwhich <command>"
 }
@@ -16,6 +17,13 @@ ppath() {
 
 pingo() {
   echo "pong"
+}
+
+pupdate() {
+  export GOROOT=/usr/local/go &&
+  export GOPATH=$HOME/go &&
+  export GOBIN=$GOPATH/bin &&
+  export PATH=$PATH:$GOROOT:$GOPATH:$GOBIN
 }
 
 pinstall() {
@@ -34,6 +42,9 @@ case "$1" in
         ;;
     pingo)
         pingo
+        ;;
+    pinstall)
+        pinstall
         ;;
     pwhich)
         [ $# -eq 2 ] && pwhich "$2" || echo "Usage: pwhich <command>"
